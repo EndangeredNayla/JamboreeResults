@@ -7,6 +7,8 @@ import time
 
 app = Flask(__name__)
 
+modified_image_path = None
+
 def delete_file_after_delay(file_path, delay):
     time.sleep(delay)  # Wait for the specified delay
     if os.path.exists(file_path):
@@ -16,8 +18,18 @@ def delete_file_after_delay(file_path, delay):
 def index():
     return render_template('index.html')
 
-@app.route('/generate', methods=['POST'])
+@app.route('/download_image', methods=['GET'])
+def download_image():
+    global modified_image_path  # Access the global variable
+    if modified_image_path and os.path.exists(modified_image_path):
+        return send_file(modified_image_path)  # Serve the image
+    else:
+        return "Image not found", 404
+
+@app.route('/generate', methods=['POST', 'GET'])
 def generate_data():
+    global modified_image_path
+
     # Collecting star and coin amounts for four players
     star_amounts = [
         request.form.get('star_amount_1'),
@@ -157,7 +169,7 @@ def generate_data():
     threading.Thread(target=delete_file_after_delay, args=(modified_image_path, 60)).start()
 
     # Return the temporary image to the user
-    return send_file(modified_image_path)
+    return redirect(url_for('download_image'))  # Redirect to download_image route
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
