@@ -59,7 +59,7 @@ def generate_data():
         p2_star_1 = Image.open(f'number/{int(star_amounts[1][0])}.png')
         board_image.paste(p2_star_1, (460, 260), p2_star_1)
     except:
-        p2_star_1 = Image.open(f'number/{int(star_amounts[1][10])}.png')
+        p2_star_1 = Image.open(f'number/{int(star_amounts[1][0])}.png')
         board_image.paste(p2_star_1, (460, 260), p2_star_1)
 
     try:
