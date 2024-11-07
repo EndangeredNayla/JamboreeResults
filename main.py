@@ -46,36 +46,36 @@ def generate_data():
     
     try:
         p1_star_2 = Image.open(f'number/{int(star_amounts[0][0])}.png')
-        board_image.paste(p1_star_2, (460, 120), p1_star_2)
+        board_image.paste(p1_star_2, (500, 120), p1_star_2)
         p1_star_1 = Image.open(f'number/{int(star_amounts[0][1])}.png')
-        board_image.paste(p1_star_1, (500, 120), p1_star_1)
+        board_image.paste(p1_star_1, (460, 120), p1_star_1)
     except:
         p1_star_1 = Image.open(f'number/{int(star_amounts[0][0])}.png')
         board_image.paste(p1_star_1, (460, 120), p1_star_1)
 
     try:
         p2_star_2 = Image.open(f'number/{int(star_amounts[1][0])}.png')
-        board_image.paste(p2_star_2, (460, 260), p2_star_2) 
+        board_image.paste(p2_star_2, (500, 260), p2_star_2) 
         p2_star_1 = Image.open(f'number/{int(star_amounts[1][1])}.png')
-        board_image.paste(p2_star_1, (500, 260), p2_star_1)
+        board_image.paste(p2_star_1, (460, 260), p2_star_1)
     except:
         p2_star_1 = Image.open(f'number/{int(star_amounts[1][10])}.png')
         board_image.paste(p2_star_1, (460, 260), p2_star_1)
 
     try:
         p3_star_2 = Image.open(f'number/{int(star_amounts[2][0])}.png')
-        board_image.paste(p3_star_2, (460, 400), p3_star_2) 
+        board_image.paste(p3_star_2, (500, 400), p3_star_2) 
         p3_star_1 = Image.open(f'number/{int(star_amounts[2][1])}.png')
-        board_image.paste(p3_star_1, (500, 400), p3_star_1)
+        board_image.paste(p3_star_1, (460, 400), p3_star_1)
     except:
         p3_star_1 = Image.open(f'number/{int(star_amounts[2][0])}.png')
         board_image.paste(p3_star_1, (460, 400), p3_star_1)
 
     try:
         p4_star_2 = Image.open(f'number/{int(star_amounts[3][0])}.png')
-        board_image.paste(p4_star_2, (460, 540), p4_star_2)
+        board_image.paste(p4_star_2, (500, 540), p4_star_2)
         p4_star_1 = Image.open(f'number/{int(star_amounts[3][1])}.png')
-        board_image.paste(p4_star_1, (500, 540), p4_star_1) 
+        board_image.paste(p4_star_1, (460, 540), p4_star_1) 
     except:
         p4_star_1 = Image.open(f'number/{int(star_amounts[3][0])}.png')
         board_image.paste(p4_star_1, (460, 540), p4_star_1)
