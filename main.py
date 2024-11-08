@@ -10,9 +10,9 @@ app = Flask(__name__)
 modified_image_path = None
 
 def delete_file_after_delay(file_path, delay):
-    time.sleep(delay)  # Wait for the specified delay
+    time.sleep(delay)
     if os.path.exists(file_path):
-        os.remove(file_path)  # Delete the file
+        os.remove(file_path)
 
 @app.route('/')
 def index():
@@ -20,9 +20,9 @@ def index():
 
 @app.route('/download_image', methods=['GET'])
 def download_image():
-    global modified_image_path  # Access the global variable
+    global modified_image_path
     if modified_image_path and os.path.exists(modified_image_path):
-        return send_file(modified_image_path)  # Serve the image
+        return send_file(modified_image_path)
     else:
         return "Image not found", 404
 
@@ -30,7 +30,6 @@ def download_image():
 def generate_data():
     global modified_image_path
 
-    # Collecting star and coin amounts for four players
     star_amounts = [
         request.form.get('star_amount_1'),
         request.form.get('star_amount_2'),
@@ -43,19 +42,34 @@ def generate_data():
         request.form.get('coin_amount_3'),
         request.form.get('coin_amount_4')
     ]
+
+    chars = [
+        request.form.get('char_1'),
+        request.form.get('char_2'),
+        request.form.get('char_3'),
+        request.form.get('char_4')
+    ]
+
     turn_count = request.form.get('turn_count')
     board = request.form.get('board')
 
-    # Here you can process the existing images and data in the maps directory
-    # For example, you might want to load an image based on the selected board
-    board_image_path = os.path.join(f"maps/{turn_count}{board}.png")  # Assuming images are in PNG format
+    board_image_path = os.path.join(f"maps/{turn_count}{board}.png")
+
+    char_1_path = Image.open(os.path.join(f"char/{chars[0]}.png")).resize((96, 96), Image.Resampling.LANCZOS)
+    char_2_path = Image.open(os.path.join(f"char/{chars[1]}.png")).resize((96, 96), Image.Resampling.LANCZOS)
+    char_3_path = Image.open(os.path.join(f"char/{chars[2]}.png")).resize((96, 96), Image.Resampling.LANCZOS)
+    char_4_path = Image.open(os.path.join(f"char/{chars[3]}.png")).resize((96, 96), Image.Resampling.LANCZOS)
 
     if not os.path.exists(board_image_path):
         return f"Board image not found: {board_image_path}"
 
-    # Load the board image
     board_image = Image.open(board_image_path)
-    
+
+    board_image.paste(char_1_path, (260, 117), char_1_path)
+    board_image.paste(char_2_path, (260, 257), char_2_path)
+    board_image.paste(char_3_path, (260, 397), char_3_path)
+    board_image.paste(char_4_path, (260, 537), char_4_path)
+
     try:
         p1_star_2 = Image.open(f'number/{int(star_amounts[0][1])}.png')
         board_image.paste(p1_star_2, (500, 120), p1_star_2)
@@ -160,16 +174,13 @@ def generate_data():
             board_image.paste(p4_coin_1, (895, 540), p4_coin_1)
 
 
-    # Process the data as needed
     with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as temp_file:
         modified_image_path = temp_file.name
         board_image.save(modified_image_path)
 
-    # Start a thread to delete the file after 60 seconds
     threading.Thread(target=delete_file_after_delay, args=(modified_image_path, 60)).start()
 
-    # Return the temporary image to the user
-    return redirect(url_for('download_image'))  # Redirect to download_image route
+    return redirect(url_for('download_image'))
 
 if __name__ == '__main__':
     app.run()
